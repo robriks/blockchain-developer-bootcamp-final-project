@@ -1,24 +1,29 @@
 require("@nomiclabs/hardhat-waffle");
 const fs = require("fs")
 const privateKey = fs.readFileSync(".secret").toString()
-const projectId = 'd2495fbd26644a758c52176337d3e8b6'
+const infuraprojectId = fs.readFileSync(".env").toString()
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+  //defaultNetwork: "rinkeby",
   networks: {
     hardhat: {
       chainId: 1337
-    },
-    mumbai: {
-      url: 'https://polygon-mumbai.infura.io/v3/${projectId}',
-      accounts: [privateKey]
     },
     rinkeby: {
       url: 'https://rinkeby.infura.io/v3/d2495fbd26644a758c52176337d3e8b6',
       accounts: [privateKey]
     }
   },
-  solidity: "0.8.4",
+  solidity: {
+    version: "0.8.0",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200
+      }
+    }
+  }
 };

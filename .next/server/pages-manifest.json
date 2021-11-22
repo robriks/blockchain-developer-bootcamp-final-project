@@ -1,6 +1,5 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/mint-your-horn-nft": "pages/mint-your-horn-nft.js"
+  "/_document": "pages/_document.js"
 }

@@ -30,16 +30,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/mint-your-horn-nft": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/mint-your-horn-nft.js"
-    ],
-    "/my-account-history": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/my-account-history.js"
-    ],
     "/my-horns": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

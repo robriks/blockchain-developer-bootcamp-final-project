@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 
-import { nftmarketaddress, nftaddress } from '../config'
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
-import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+// import { nftmarketaddress, nftaddress } from '../config'
+import { hornmarketplaceaddress } from '../config'
+
+// import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+// import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMarketplace.json'
 
 export default function MyAccountHistory() {
     const [nfts, setNfts] = useState([])
@@ -26,9 +29,8 @@ export default function MyAccountHistory() {
         const provider = new ethers.providers.Web3Provider(connection)
         const signer = provider.getSigner()
 
-        const marketContract = new ethers.Contract(nftmarketaddress, NFTMarket.abi, signer)
-        const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider)
-        const data = await marketContract.fetchItemsCreated()
+        const marketContract = new ethers.Contract(hornmarketplaceaddress, HornMarketplace.abi, signer)
+        // const data = await marketContract.fetchItemsCreated() // change to function that shows minted horns
 
         const items = await Promise.all(data.map(async i => {
             const tokenUri = await tokenContract.tokenURI(i.tokenId)

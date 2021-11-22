@@ -1,0 +1,30 @@
+{
+  "name": "final-proj",
+  "version": "1.0.0",
+  "description": "NFT Marketplace & Escrow Contract for Classical Musicians by robriks github.com/robriks/consensys-academy-final-project hornosexual.eth (0x65b54A4646369D8ad83CB58A5a6b39F22fcd8cEe) # FEEL FREE TO SKIP TO TL;DR!",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robriks/blockchain-developer-bootcamp-final-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robriks/blockchain-developer-bootcamp-final-project/issues"
+  },
+  "homepage": "https://github.com/robriks/blockchain-developer-bootcamp-final-project#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.3",
+    "ganache-cli": "^6.12.2",
+    "solc": "^0.8.10"
+  },
+  "devDependencies": {
+    "@remix-project/remix-tests": "^0.2.8"
+  }
+}
