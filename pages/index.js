@@ -2,16 +2,15 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
+import { useRouter } from 'next/router'
 
-//import {nftaddress, nftmarketaddress} from '../config'
 import { hornmarketplaceaddress } from '../config'
-//import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
-//import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMarketplace.json'
 
 export default function Home() {
   const [nfts, setNfts] = useState([])
   const [loadingState, setLoadingState] = useState('not-loaded')
+  const [formInput, updateFormInput] = useState({ shippingAddress: '' })
 
   useEffect(() => {
     loadNFTs()
@@ -21,11 +20,12 @@ export default function Home() {
     const provider = new ethers.providers.JsonRpcProvider()
     const marketContract = new ethers.Contract(hornmarketplaceaddress, HornMarketplace.abi, provider)
     const data = await marketContract.getCurrentlyListedHorns()
+    let nonZeroData = data.filter(horn => horn.tokenId != 0)
 
-    const items = await Promise.all(data.map(async i => {
+    const items = await Promise.all(nonZeroData.map(async i => {
       const tokenUri = await marketContract.tokenURI(i.tokenId)
       const metadata = await axios.get(tokenUri)
-      let price = ethers.utils.formatUnits(i.listPrice.toString(), "ether")
+      const price = ethers.utils.formatUnits(i.listPrice.toString(), "ether")
       let item = {
         price,
         tokenId: i.tokenId.toNumber(),
@@ -43,29 +43,27 @@ export default function Home() {
     setLoadingState('loaded')
   }
 
-  // change this once mint-your-horn is done
-  async function buyNft(nft) {
-    // const shippingAddress = formInput
+  async function purchaseHorn(nft) {
     const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)
-
     const signer = provider.getSigner()
+
     const contract = new ethers.Contract(hornmarketplaceaddress, HornMarketplace.abi, signer)
-
-    const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
-
+    const shippingAddress = formInput.shippingAddress
     // selected nft is passed into this function scope from button onClick handler
-    // shippingAddress is entered in a text field below the buy button, structured in the html/jsx below
-    const transaction = await contract.createMarketSale(nft.tokenId, { // change to .purchaseHornByHornId(nft.tokenId, shippingAddress, {value: price})
-      value: price
-    })
+    // shippingAddress is entered in a text field above the buy button, this address must be EXACTLY matched by the seller later when calling the ship function
+    const paymentAmount = ethers.utils.parseUnits(nft.price, "ether")
+    const transaction = await contract.purchaseHornByHornId(nft.tokenId, shippingAddress, { value: paymentAmount })
+
     await transaction.wait()
     loadNFTs()
   }
 
   if (loadingState === 'loaded' && !nfts.length) return (
-    <h1 className="px-20 py-10 text-3x1">No horns listed for sale in marketplace </h1>
+    <div>
+      <h1 className="flex justify-center py-10 px-20 text-3x1">No horns listed for sale in marketplace</h1>
+    </div>
   )
 
   return (
@@ -86,13 +84,13 @@ export default function Home() {
                   </div>
                   <div className="p-4 bg-black">
                     <p className="text-2x1 mb-4 font-bold text-white">Listed Price: {nft.price} Eth</p>
-                    {/*<input 
-                      placeholder="Please enter shipping address in order to purchase"
-                      className="mt-2 border rounded p-4"
-                      onChange={e => updateFormInput({ ...formInput, shippingAddress: e.target.value })} // maybe dont need to ...separate since only 1 input
-                    /> make sure this properly passes the shippingAddress input into the buyNft function above*/}
-                    <button className="w-full bg-green-500 text-white font-bold py-2 px-12
-                    rounded" onClick={() => buyNft(nft)}>Buy</button>
+                    <input 
+                      placeholder="Enter your shipping address in order to purchase"
+                      className="mt-2 border rounded p-2"
+                      onChange={e => updateFormInput({ formInput, shippingAddress: e.target.value })}
+                    />
+                    <button className="w-full bg-green-500 text-white font-bold py-2 px-12 rounded" 
+                      onClick={() => purchaseHorn(nft)}>Purchase Horn</button>
                   </div>
                 </div>
               ))

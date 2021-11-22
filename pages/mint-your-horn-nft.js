@@ -5,11 +5,8 @@ import { useRouter } from 'next/router'
 import Web3Modal from 'web3modal'
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
-//import { nftaddress, nftmarketaddress } from '../config'
 import { hornmarketplaceaddress } from '../config'
 
-//import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
-//import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMarketplace.json'
 
 export default function MintYourHornNFT () {
@@ -49,14 +46,6 @@ export default function MintYourHornNFT () {
           const url = 'https://ipfs.infura.io/ipfs/' + added.path
           mintAndListHorn(url)
         }
-
-        // try {
-        //     const added = await client.add(data)
-        //     const url = 'https://ipfs.infura.io/ipfs/' + added.path
-        //     createHornNFT(url) // change name to mintandlistHorn, add make, model, style, serialNumber, price as parameters
-        // } catch (error) { // change to else and repeat lines above with new mintdontlistHorn function
-        //     console.log('Error uploading file:', error)
-        // }
     }
 
     async function mintAndListHorn(url) {
@@ -119,8 +108,9 @@ export default function MintYourHornNFT () {
                   className="mt-2 border rounded p-4"
                   onChange={e => updateFormInput({ ...formInput, description: e.target.value })} 
                 />
+                <p className="text-black-100">Note: Leave the price field below blank if you wish to mint your horn as an NFT without listing it for sale</p>
                 <input 
-                  placeholder="List Price in Eth"
+                  placeholder="List Price in Eth (Leave blank if you wish to mint without listing for sale)"
                   className="mt-2 border rounded p-4"
                   onChange={e => updateFormInput({ ...formInput, price: e.target.value })} 
                 />

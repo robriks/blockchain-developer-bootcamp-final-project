@@ -22,9 +22,9 @@ function MyApp({ Component, pageProps }) {
             Currently Owned Horns
           </a>
         </Link>
-        <Link href="/my-account-history">
+        <Link href="/purchases-and-sales">
           <a className="mr-6 text-green-500">
-            My Account History
+            Purchases And Sales
           </a>
         </Link>
       </div>
