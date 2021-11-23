@@ -63,32 +63,14 @@ export default function MyHorns() {
     function isSoldOrShippedOrDelivered(nft) {
       if (nft.status == 1) { // Horn NFT shown as Sold by reading enum HornStatus from Marketplace contract
         return (
-          <div className="statusLabel">
-            <h2 className="flex justify-center font-bold">Sold! Buyer sent payment to escrow</h2>
-            <div className="center">
-            <button className="flex font-bold">Go to Purchases and Sales to ship</button>
+          <div className="p-3">
+            <h2 className="flex justify-center font-bold items-center px-25 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-pink-500">Sold! Buyer sent payment to escrow</h2>
+            <p className="flex justify-center items-center py-1 text-gray-500 font-small">After shipping horn, click mark horn shipped:</p>
+            <div className="p-2 flex justify-center">
+              <button className="flex justify-center items-center px-20 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-500 hover:bg-green-600">Mark Horn as Shipped
+              onClick=
+              </button>
             </div>
-            <style jsx>{`
-              .statusLabel {
-                margin: 20px;
-                height: 50px;
-                width: 350px;
-                position: relative;
-                background: green;
-              }
-              h2 {
-                color: white;
-                line-height: 3;
-              }
-              button {
-                color: pink;
-                margin: 5px;
-                position: relative;
-                background: purple;
-                height: 40px;
-                line-height: 2.4;
-              }
-            `}</style>
           </div>
         )
       } 
@@ -150,8 +132,8 @@ export default function MyHorns() {
                             <p className="flex justify-center text-gray-400 p-1">Model: {nft.model}</p>
                           </div>
                         </div>
-                        <div className="flex justify-center">
-                          { showListPrice(nft) }
+                        <div className="p-1">
+                          <p style={{ height: "0"}} className="flex justify-center text-2x1 mb-6 text-black">Listed Price: {nft.price} Eth</p>
                         </div>
                         <div>
                           { isSoldOrShippedOrDelivered(nft) }
@@ -186,7 +168,7 @@ export default function MyHorns() {
                             className="mt-2 border rounded p-4"
                             onChange={ e => updateFormInput({ formInput, price: e.target.value })}
                           />
-                          <button className="w-full bg-green-500 text-white font-bold py-2 px12 rounded"
+                          <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px12 rounded-md"
                             onClick={() => listExisting(nft)}>List This Horn NFT</button>
                         </div>
                       </div>

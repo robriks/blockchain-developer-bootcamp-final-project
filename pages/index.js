@@ -2,7 +2,6 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
-import { useRouter } from 'next/router'
 
 import { hornmarketplaceaddress } from '../config'
 import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMarketplace.json'
@@ -10,7 +9,7 @@ import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMark
 export default function Home() {
   const [nfts, setNfts] = useState([])
   const [loadingState, setLoadingState] = useState('not-loaded')
-  const [formInput, updateFormInput] = useState({ shippingAddress: '' })
+  const [formInput, updateFormInput] = useState({ street: '', city: '', state: '', zip: '' })
 
   useEffect(() => {
     loadNFTs()
@@ -49,10 +48,12 @@ export default function Home() {
     const provider = new ethers.providers.Web3Provider(connection)
     const signer = provider.getSigner()
 
+    // shippingAddress is created by combining the inputs in text fields above the buy button
+    // this address must be EXACTLY matched by the seller later when calling the ship function
+    const { street, city, state, zip } = formInput
+    const shippingAddress = street + city + state + zip
     const contract = new ethers.Contract(hornmarketplaceaddress, HornMarketplace.abi, signer)
-    const shippingAddress = formInput.shippingAddress
     // selected nft is passed into this function scope from button onClick handler
-    // shippingAddress is entered in a text field above the buy button, this address must be EXACTLY matched by the seller later when calling the ship function
     const paymentAmount = ethers.utils.parseUnits(nft.price, "ether")
     const transaction = await contract.purchaseHornByHornId(nft.tokenId, shippingAddress, { value: paymentAmount })
 
@@ -71,25 +72,56 @@ export default function Home() {
       <div className="p-4">
       <h2 className="font-bold text-2x1 py-2">Horns For Sale</h2>
         <div className="px-r" style={{ maxWidth: '1600px'}}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2">
             {
               nfts.map((nft, i) => (
-                <div key={i} className="border shadow rounded-x1 overflow-hidden">
+                <div key={i} className="shadow rounded-x1 overflow-hidden">
                   <img src={nft.image} />
-                  <div className="p-4">
-                    <p style={{ height: '64px' }} className="text-2xl font-semibold">{nft.make}</p>
-                    <div style={{ height: "70px", overflow: 'hidden' }}>
-                      <p className="text-gray-400">Model: {nft.model}</p>
+                  <div className="p-3">
+                    <p style={{ height: '50px' }} className="flex justify-center text-3xl font-semibold p-4">{nft.make}</p>
+                    <div style={{ height: "30px", overflow: 'hidden' }}>
+                      <p className="flex justify-center text-gray-400 p-1">Model: {nft.model}</p>
                     </div>
                   </div>
-                  <div className="p-4 bg-black">
-                    <p className="text-2x1 mb-4 font-bold text-white">Listed Price: {nft.price} Eth</p>
-                    <input 
-                      placeholder="Enter your shipping address in order to purchase"
-                      className="mt-2 border rounded p-2"
-                      onChange={e => updateFormInput({ formInput, shippingAddress: e.target.value })}
+                  <div className="p-2">
+                    <p style={{ height: "0"}} className="flex justify-center text-2x1 mb-6 text-black">Listed Price: {nft.price} Eth</p>
+                    <p className="text-1x1 text-gray-400"> Please enter your shipping address to purchase:</p>
+                  </div>
+            
+                  <div class="col-span-6">
+                    <label for="street-address" class="block text-sm font-medium text-gray-700">Street address</label>
+                    <input type="text" name="street-address" id="street-address" 
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                      onChange={e => updateFormInput({...formInput, street: e.target.value })}
                     />
-                    <button className="w-full bg-green-500 text-white font-bold py-2 px-12 rounded" 
+                  </div>
+
+                  <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                    <input type="text" name="city" id="city" 
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      onChange={e => updateFormInput({...formInput, city: e.target.value })} 
+                    />
+                  </div>
+
+                  <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="region" class="block text-sm font-medium text-gray-700">State / Province</label>
+                    <input type="text" name="region" id="region"  
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                      onChange={e => updateFormInput({...formInput, state: e.target.value })}
+                    />
+                  </div>
+
+                  <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label for="postal-code" class="block text-sm font-medium text-gray-700">ZIP / Postal code</label>
+                    <input type="text" name="postal-code" id="postal-code" 
+                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                      onChange={e => updateFormInput({...formInput, zip: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="p-1">
+                    <button style={{height: '50px'}} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-12 rounded-md" 
                       onClick={() => purchaseHorn(nft)}>Purchase Horn</button>
                   </div>
                 </div>

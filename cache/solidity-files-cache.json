@@ -1027,8 +1027,8 @@
       ]
     },
     "/home/robriks/hornmarketdraft/contracts/HornMarketplace.sol": {
-      "lastModificationDate": 1637538901898,
-      "contentHash": "b5e831b97f76f54548169f6506f7cc53",
+      "lastModificationDate": 1637613236107,
+      "contentHash": "b88068bf733c0007579bbf59f9be77bf",
       "sourceName": "contracts/HornMarketplace.sol",
       "solcConfig": {
         "version": "0.8.0",
