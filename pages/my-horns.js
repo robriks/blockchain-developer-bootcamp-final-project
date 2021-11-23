@@ -2,8 +2,9 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
+import router, { useRouter } from 'next/router'
 
-import { nftmarketaddress, nftaddress, hornmarketplaceaddress } from '../config'
+import { hornmarketplaceaddress } from '../config'
 import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMarketplace.json'
 
 export default function MyHorns() {
@@ -12,7 +13,6 @@ export default function MyHorns() {
     const [unlisted, setUnlistedNfts] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded')
     const [formInput, updateFormInput] = useState({ price: '' })
-
     
     useEffect(() => {
         loadNfts()
@@ -53,7 +53,7 @@ export default function MyHorns() {
 
         const listedNfts = items.filter(i => i.status < 3)
         const unlistedNfts = items.filter(i => i.status == 3)
-        // const in
+
         setListedNfts(listedNfts)
         setUnlistedNfts(unlistedNfts)
         setNfts(items)
@@ -61,14 +61,18 @@ export default function MyHorns() {
     }
 
     function isSoldOrShippedOrDelivered(nft) {
+      const router = useRouter()
       if (nft.status == 1) { // Horn NFT shown as Sold by reading enum HornStatus from Marketplace contract
         return (
           <div className="p-3">
             <h2 className="flex justify-center font-bold items-center px-25 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-pink-500">Sold! Buyer sent payment to escrow</h2>
-            <p className="flex justify-center items-center py-1 text-gray-500 font-small">After shipping horn, click mark horn shipped:</p>
+            <p className="flex justify-center items-center py-1 text-gray-500 font-small">Click below to view shipping address:</p>
             <div className="p-2 flex justify-center">
-              <button className="flex justify-center items-center px-20 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-500 hover:bg-green-600">Mark Horn as Shipped
-              onClick=
+              <button className="flex justify-center items-center px-20 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-500 hover:bg-green-600"
+                onClick={(e) => {
+                  router.push('/transactions-in-progress')
+                }}>
+                Click to Ship
               </button>
             </div>
           </div>
@@ -82,14 +86,6 @@ export default function MyHorns() {
         )
       }
       // if (nft.status == 3) {return()} // Horn NFT shown as Delivered by reading enum HornStatus from Marketplace contract
-    }
-
-    function showListPrice(nft) {
-      return (
-      <div className="p-1" style={{ margin: '1px', height: '20px' }}>
-        <h2 className="flex justify-center text 2xl font-bold text-black">Listed Price: {nft.price} Eth</h2>
-      </div>
-      )
     }
 
     async function listExisting(nft) {
@@ -121,7 +117,7 @@ export default function MyHorns() {
             Boolean(listed.length) && (
               <div>
                 <h2 className="text-2x1 py-2">Your Horn NFTs Listed For Sale</h2>
-                <div className="grid grid-cols-1 smg:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
                   {
                     listed.map((nft, i) => (
                       <div key={i} className="border shadow rounded-x1 overflow-hidden p-7">
@@ -169,7 +165,9 @@ export default function MyHorns() {
                             onChange={ e => updateFormInput({ formInput, price: e.target.value })}
                           />
                           <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px12 rounded-md"
-                            onClick={() => listExisting(nft)}>List This Horn NFT</button>
+                            onClick={() => listExisting(nft)}>
+                            List This Horn NFT
+                          </button>
                         </div>
                       </div>
                     ))

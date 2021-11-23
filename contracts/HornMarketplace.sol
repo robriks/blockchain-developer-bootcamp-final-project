@@ -372,6 +372,10 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
         return payable(currentOwners[__hornId]);
     }
 
+    function getShippingAddress() public view returns (string memory) {
+        return shippingAddresses[msg.sender];
+    }
+
     function getCurrentOwnerByStructAttribute(uint __hornId) public view returns (address payable) {
         return horns[__hornId].currentOwner;
     }

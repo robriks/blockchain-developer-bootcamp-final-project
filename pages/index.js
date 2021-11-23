@@ -51,7 +51,7 @@ export default function Home() {
     // shippingAddress is created by combining the inputs in text fields above the buy button
     // this address must be EXACTLY matched by the seller later when calling the ship function
     const { street, city, state, zip } = formInput
-    const shippingAddress = street + city + state + zip
+    const shippingAddress = street + '^' + city + '^' + state + '^' + zip
     const contract = new ethers.Contract(hornmarketplaceaddress, HornMarketplace.abi, signer)
     // selected nft is passed into this function scope from button onClick handler
     const paymentAmount = ethers.utils.parseUnits(nft.price, "ether")
@@ -85,10 +85,10 @@ export default function Home() {
                   </div>
                   <div className="p-2">
                     <p style={{ height: "0"}} className="flex justify-center text-2x1 mb-6 text-black">Listed Price: {nft.price} Eth</p>
-                    <p className="text-1x1 text-gray-400"> Please enter your shipping address to purchase:</p>
+                    <p className="text-1x1 text-gray-400">Please enter your shipping address to purchase:</p>
                   </div>
             
-                  <div class="col-span-6">
+                  <div className="col-span-6">
                     <label for="street-address" class="block text-sm font-medium text-gray-700">Street address</label>
                     <input type="text" name="street-address" id="street-address" 
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
