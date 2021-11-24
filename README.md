@@ -1,4 +1,4 @@
-# NFT Marketplace & Escrow Contract for Classical Musicians
+# NFT Marketplace & Escrow for selling instruments
 #### by robriks github.com/robriks/consensys-academy-final-project
 ##### hornosexual.eth (0x65b54A4646369D8ad83CB58A5a6b39F22fcd8cEe)
 ###### Front-end Address: github pages url here
@@ -37,11 +37,18 @@ Why use both Truffle and Hardhat?  Since there was more recent documentation ava
 
 #####In your README.md, be sure to have clear instructions on: 
 
-####### edit when deployed to rinkeby
-Start the front-end server to interface with the smart contracts:
-In the root directory, ensure that configurations are properly set by populating the .secret file (which is protected by .gitignore) with the private key to your Rinkeby testnet account.
+####### Rinkeby public testnet address of this Horn Marketplace dApp is:
 
-Remember: DO NOT UPLOAD SENSITIVE INFORMATION TO GITHUB OR A PUBLIC SITE! Be sure to only add Infura account details, MetaMask mnemonics, any private keys, etc., to the .env and .secret files, which will be injected into the Horn Marketplace dApp through Infura/MetaMask privately and securely.  This file is protected by a .gitignore in the project locally so that your private keys are NEVER uploaded to the blockchain or to GitHub by git tracking.
+RINKEBYADDRESSHERE
+
+### Interacting with the dApp
+First, in the root directory, ensure that configurations are properly set by populating the .secret file and the .env file (which are both protected by .gitignore). Do this by pasting the private key to your Rinkeby testnet account into the .secret file and by pasting your Infura Rinkeby API key into the .env file. To use multiple accounts with individual private keys, create a new file with its respective privatekey const declaration in the hardhat.config.js file, similar to the original .secret file. If you fork this repo, be sure to add your .secret2 file to .gitignore before pushing to GitHub.
+
+##### When testing out the dApp:
+Be sure to use at least two MetaMask accounts: a seller and a buyer. This is required because the dApp is a marketplace and my implementation of the smart contract restricts behaviors to two classes of users: buyers and sellers. The front-end also differentiates between these two classes by reading your address and only displaying active purchases and sales that are relevant to you for actions like shipping/claiming depending on whether you have listed, minted, paid for, sold, or shipped an instrument. Keep track of which address is a buyer/seller as you cycle between the front-end components and at what stage (minted, listed, paidfor, sold, shipped, delivered) the transaction is at, so you can fully appreciate the marketplace's functionality!
+
+##### For your security: 
+Be sure to only add Infura account details, MetaMask mnemonics, any private keys, etc., to the .env and .secret files, which will be injected into the Horn Marketplace dApp through Infura/MetaMask privately and securely. This file is protected by a .gitignore in the project locally so that your private keys are NEVER uploaded to the blockchain or to GitHub by git tracking.
 
 
 -A screencast of you walking through your project, including submitting transactions and seeing the updated state. You can use a screenrecorder of your choosing or something like Loom, and you can share the link to the recording in your README.md

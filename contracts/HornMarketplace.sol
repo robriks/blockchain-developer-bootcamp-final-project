@@ -245,6 +245,7 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
       payable 
       forSale(__hornId) 
       paidEnough(__hornId) {
+        require(msg.sender != currentOwners[__hornId]);
         // Forward payment to escrow contract for safekeeping
         escrow.deposit{value: msg.value}(currentOwners[__hornId]);
         // Add shipping address of buyer aka msg.sender to mapping for later confirmation

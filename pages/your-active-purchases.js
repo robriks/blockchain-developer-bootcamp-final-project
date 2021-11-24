@@ -74,7 +74,7 @@ export default function YourActivePurchases() {
     
         const marketContract = new ethers.Contract(hornmarketplaceaddress, HornMarketplace.abi, signer)
         let transaction = await marketContract.markHornDeliveredAndOwnershipTransferred(nft.tokenId)
-        let tx = transaction.wait()
+        let tx = await transaction.wait()
     
         router.push('/my-horns')
       }
