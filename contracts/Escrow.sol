@@ -1,22 +1,16 @@
-/// This contract is an OpenZeppelin implementation of an Escrow contract accepts ETH from horn buyers
-/// which are securely held until the horn is shipped by seller and subsequently received by buyer
-/// at which time funds are released to seller
-// @notice Safeguards escrowed funds paid by buyer until buyer receives instrument
-
-
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts v4.3.2 (utils/escrow/Escrow.sol)
-
 pragma solidity ^0.8.0;
+
+/// @title An Escrow contract that safeguard escrowed funds paid by buyer until buyer receives instrument
+/// @dev This contract is forked from OpenZeppelin's implementation of an Escrow contract:
+/// @dev OpenZeppelin Contracts v4.3.2 (utils/escrow/Escrow.sol)
+/// @author Markus Osterlund
+/// @notice It accepts ETH from horn buyers which is securely held until the horn is shipped by seller and subsequently received by buyer at which time funds are released to seller
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
 /**
- * @title Escrow
- * @dev Base escrow contract, holds funds designated for a payee until they
- * withdraw them.
- *
  * Intended usage: This contract (and derived escrow contracts) should be a
  * standalone contract, that only interacts with the contract that instantiated
  * it. That way, it is guaranteed that all Ether will be handled according to
@@ -38,33 +32,21 @@ contract Escrow is Ownable {
         return _deposits[payee];
     }
 
-    /**
-     * @dev Stores the sent amount as credit to be withdrawn.
-     * @param payee The destination address of the funds.
-     */
+    ///@dev Stores the sent amount as credit to be withdrawn.
+    ///@param payee The destination address of the funds.
     function deposit(address payee) public payable virtual onlyOwner {
         uint256 amount = msg.value;
         _deposits[payee] += amount;
         emit Deposited(payee, amount);
     }
 
-    /**
-     * @dev Withdraw accumulated balance for a payee, forwarding all gas to the
-     * recipient.
-     *
-     * WARNING: Forwarding all gas opens the door to reentrancy vulnerabilities.
-     * Make sure you trust the recipient, or are either following the
-     * checks-effects-interactions pattern or using {ReentrancyGuard}.
-     *
-     * @param payee The address whose funds will be withdrawn and transferred to.
-     */
-    function withdraw(address payable payee) public virtual onlyOwner {
-        uint256 payment = _deposits[payee];
-
-        _deposits[payee] = 0;
-
+    /// @dev Withdraw an amount, corresponding to a single shipment, from payee balance, forwarding all gas to the recipient.
+    /// @param payee The address whose funds will be withdrawn and transferred to.
+    /// @param amt The amount to be withdrawn, corresponding to the listPrice of the Horn NFT being shipped
+    function withdraw(address payable payee, uint amt) public virtual onlyOwner {
+        uint256 payment = amt;
+        _deposits[payee] -= payment;
         payee.sendValue(payment);
-
         emit Withdrawn(payee, payment);
     }
 }

@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 import { hornmarketplaceaddress } from '../config'
 import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMarketplace.json'
@@ -13,6 +13,8 @@ export default function MyHorns() {
     const [unlisted, setUnlistedNfts] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded')
     const [formInput, updateFormInput] = useState({ price: '' })
+    
+    const router = useRouter()
     
     useEffect(() => {
         loadNfts()
@@ -61,7 +63,6 @@ export default function MyHorns() {
     }
 
     function isSoldOrShippedOrDelivered(nft) {
-      const router = useRouter()
       if (nft.status == 1) { // Horn NFT shown as Sold by reading enum HornStatus from Marketplace contract
         return (
           <div className="p-3">
@@ -70,7 +71,7 @@ export default function MyHorns() {
             <div className="p-2 flex justify-center">
               <button className="flex justify-center items-center px-20 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-500 hover:bg-green-600"
                 onClick={(e) => {
-                  router.push('/transactions-in-progress')
+                  router.push('/your-active-sales')
                 }}>
                 Click to Ship
               </button>
@@ -80,12 +81,13 @@ export default function MyHorns() {
       } 
       if (nft.status == 2) { // Horn NFT shown as Shipped by reading enum HornStatus from Marketplace contract
         return (
-          <div className="statusLabel">
-            <h2 className="flex justify-center font-bold">Shipped to buyer!</h2>
-          </div> // may need <style jsx>{``} here for label to have styling
+          <div className="p-3">
+            <h2 className="flex justify-center font-bold items-center px-25 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-pink-500">
+              Shipped to buyer! Awaiting delivery
+            </h2>
+          </div>
         )
       }
-      // if (nft.status == 3) {return()} // Horn NFT shown as Delivered by reading enum HornStatus from Marketplace contract
     }
 
     async function listExisting(nft) {
@@ -121,15 +123,15 @@ export default function MyHorns() {
                   {
                     listed.map((nft, i) => (
                       <div key={i} className="border shadow rounded-x1 overflow-hidden p-7">
-                        <img src={nft.image} className="rounded" />
-                        <div className="p-0">
+                      <div className="p-3">
                           <p style={{ height: '50px' }} className="flex justify-center text-3xl font-semibold p-4">{nft.make}</p>
                           <div style={{ height: "30px", overflow: 'hidden' }}>
                             <p className="flex justify-center text-gray-400 p-1">Model: {nft.model}</p>
                           </div>
                         </div>
+                        <img src={nft.image} className="rounded" />
                         <div className="p-1">
-                          <p style={{ height: "0"}} className="flex justify-center text-2x1 mb-6 text-black">Listed Price: {nft.price} Eth</p>
+                          <p style={{ height: "0"}} className="flex justify-center text-2x1 mb-6 text-gray-400">Listed Price: {nft.price} Eth</p>
                         </div>
                         <div>
                           { isSoldOrShippedOrDelivered(nft) }
@@ -151,22 +153,22 @@ export default function MyHorns() {
                   {
                     unlisted.map((nft, i) => (
                       <div key={i} className="border shadow rounded-x1 overflow-hidden">
-                        <img src={nft.image} className="rounded" />
-                        <div className="p-4">
-                          <p style={{ height: '64px' }} className="text-2xl font-semibold">{nft.make}</p>
+                      <div className="p-3">
+                          <p style={{ height: '64px' }} className="flex justify-center text-3xl font-semibold p-4">{nft.make}</p>
                           <div style={{ height: "70px", overflow: 'hidden' }}>
-                            <p className="text-gray-400">Model: {nft.model}</p>
+                            <p className="flex justify-center text-gray-400 p-1">Model: {nft.model}</p>
                           </div>
                         </div>
-                        <div className="p-4 bg-black">
-                          <input 
-                            placeholder="List Price in Eth"
-                            className="mt-2 border rounded p-4"
-                            onChange={ e => updateFormInput({ formInput, price: e.target.value })}
-                          />
+                        <img src={nft.image} className="rounded" />
+                        <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <input placeholder="Desired Price in Eth" type="text" name="postal-code" id="postal-code" 
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                      onChange={e => updateFormInput({...formInput, price: e.target.value })}
+                    />
+                  </div><div>
                           <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px12 rounded-md"
                             onClick={() => listExisting(nft)}>
-                            List This Horn NFT
+                            List This Horn
                           </button>
                         </div>
                       </div>

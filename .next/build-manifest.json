@@ -30,10 +30,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/my-horns.js"
     ],
-    "/transactions-in-progress": [
+    "/your-active-sales": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/transactions-in-progress.js"
+      "static/chunks/pages/your-active-sales.js"
     ]
   },
   "ampFirstPages": []

@@ -76,50 +76,45 @@ export default function Home() {
             {
               nfts.map((nft, i) => (
                 <div key={i} className="shadow rounded-x1 overflow-hidden">
-                  <img src={nft.image} />
                   <div className="p-3">
                     <p style={{ height: '50px' }} className="flex justify-center text-3xl font-semibold p-4">{nft.make}</p>
                     <div style={{ height: "30px", overflow: 'hidden' }}>
                       <p className="flex justify-center text-gray-400 p-1">Model: {nft.model}</p>
-                    </div>
                   </div>
+                  </div>
+                  <img src={nft.image} />
                   <div className="p-2">
                     <p style={{ height: "0"}} className="flex justify-center text-2x1 mb-6 text-black">Listed Price: {nft.price} Eth</p>
                     <p className="text-1x1 text-gray-400">Please enter your shipping address to purchase:</p>
                   </div>
-            
                   <div className="col-span-6">
-                    <label for="street-address" class="block text-sm font-medium text-gray-700">Street address</label>
+                    <label className="block text-sm font-medium text-gray-700">Street address</label>
                     <input type="text" name="street-address" id="street-address" 
-                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
                       onChange={e => updateFormInput({...formInput, street: e.target.value })}
                     />
                   </div>
-
-                  <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                    <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                  <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700">City</label>
                     <input type="text" name="city" id="city" 
-                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       onChange={e => updateFormInput({...formInput, city: e.target.value })} 
                     />
                   </div>
-
-                  <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                    <label for="region" class="block text-sm font-medium text-gray-700">State / Province</label>
+                  <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700">State / Province</label>
                     <input type="text" name="region" id="region"  
-                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
                       onChange={e => updateFormInput({...formInput, state: e.target.value })}
                     />
                   </div>
-
-                  <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                    <label for="postal-code" class="block text-sm font-medium text-gray-700">ZIP / Postal code</label>
+                  <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700">ZIP / Postal code</label>
                     <input type="text" name="postal-code" id="postal-code" 
-                      class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
                       onChange={e => updateFormInput({...formInput, zip: e.target.value })}
                     />
                   </div>
-
                   <div className="p-1">
                     <button style={{height: '50px'}} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-12 rounded-md" 
                       onClick={() => purchaseHorn(nft)}>Purchase Horn</button>

@@ -30,7 +30,7 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
     /// @param model denotes model name of the instrument
     /// @param style denotes double/triple/descant/single/compensating and wrap ie geyer/kruspe/knopf/other
     /// @param serialNumber denotes serial number
-    /// @param listPrice denotes purchase price requested by seller
+    /// @param listPrice denotes purchase price in wei requested by seller
     /// @param tokenId refers to the ERC721 token mapping of NFT Ids
     /// @param status refers to the declared HornStatus enum which tracks the progress of an instrument sale
     /// @param currentOwner denotes musician who currently owns the instrument
@@ -66,7 +66,7 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
     /// @dev Add address to buyers when horn is paid for via escrow, address to currentOwners when sale and exchange is complete
     mapping (uint => address) currentOwners;
     mapping (uint => address) public buyers;
-    mapping (address => string) public shippingAddresses; // May actually be cheaper to enter and store bytes type via front-end
+    mapping (address => string) private shippingAddresses;
     
     /// @dev NFT and IRL exchange events and escrow transaction events used for front-end
     event HornListedForSale(uint indexed hornId, address indexed seller, string indexed make);
@@ -114,7 +114,7 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
         _;
     }
     modifier hornPaidFor(uint __hornId) {
-        require(escrow.depositsOf(msg.sender) == horns[__hornId].listPrice, "Buyer must send payment for Horn NFT to escrow first"); // ensure buyer has already deposited payment (listPrice) in escrow
+        require(escrow.depositsOf(msg.sender) >= horns[__hornId].listPrice, "Buyer must send payment for Horn NFT to escrow first"); // ensure buyer has already deposited payment (listPrice) in escrow
         require(uint(horns[__hornId].status) == 1, "Horn has not been marked as paid for yet"); // requires PaidFor status
         _;
     }
@@ -297,7 +297,7 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
         // Save payment amount in uint variable to be visually returned for improved UX/UI
         uint paymentAmt = escrow.depositsOf(payee);
         // Release escrowed payment funds to the seller from escrow contract
-        escrow.withdraw(payee);
+        escrow.withdraw(payee, horns[__hornId].listPrice);
         // Wipe msg.sender from buyers[] and shippingaddresses[] for future txs in case buyer changes address
         buyers[__hornId] = address(0);
         shippingAddresses[msg.sender] = "";
@@ -363,6 +363,28 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
         return currentHornBalance;
     }
 
+    function getPurchasedHorns() public view returns (Horn[] memory) {
+        uint totalHorns = _hornId.current();
+        uint boughtHorns;
+        
+        for (uint i = 0; i < totalHorns; i++) {
+          if (buyers[i + 1] == msg.sender) {
+            boughtHorns++;
+          }
+        }
+        // Loop through all Horn NFTs and add ones owned by msg.sender to purchasedHorns Horn[] array
+        uint indexCount = 0;
+        Horn[] memory purchasedHorns = new Horn[](boughtHorns);
+        for (uint i = 0; i < totalHorns; i++) {
+            if (buyers[i + 1] == msg.sender) {
+                uint hornId = i + 1;
+                purchasedHorns[indexCount] = horns[hornId];
+                indexCount++;
+            }
+        }
+        return purchasedHorns;
+    }
+
     /// @dev Functions that provide helpful functionality for testing and ensuring the contract is working as intended
     function getListPriceByHornId(uint __hornId) public view returns (uint) {
         return horns[__hornId].listPrice; 
@@ -372,8 +394,9 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
         return payable(currentOwners[__hornId]);
     }
 
-    function getShippingAddress() public view returns (string memory) {
-        return shippingAddresses[msg.sender];
+    function getShippingAddress(uint __hornId) public view returns (string memory) {
+        address _buyer = buyers[__hornId];
+        return shippingAddresses[_buyer];
     }
 
     function getCurrentOwnerByStructAttribute(uint __hornId) public view returns (address payable) {
