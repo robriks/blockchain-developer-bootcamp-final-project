@@ -6,7 +6,6 @@ import Web3Modal from 'web3modal'
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 import { hornmarketplaceaddress } from '../config'
-
 import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMarketplace.json'
 
 export default function MintYourHornNFT () {
