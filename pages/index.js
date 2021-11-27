@@ -7,6 +7,8 @@ import { hornmarketplaceaddress } from '../config'
 import HornMarketplace from '../artifacts/contracts/HornMarketplace.sol/HornMarketplace.json'
 
 export default function Home() {
+  const fs = require("fs")
+  const infuraprojectId = fs.readFileSync(".env").toString()
   const [nfts, setNfts] = useState([])
   const [loadingState, setLoadingState] = useState('not-loaded')
   const [formInput, updateFormInput] = useState({ street: '', city: '', state: '', zip: '' })
@@ -16,7 +18,7 @@ export default function Home() {
   }, [])
 
   async function loadNFTs() {
-    const provider = new ethers.providers.JsonRpcProvider()
+    const provider = new ethers.providers.JsonRpcProvider('https://rinkeby.infura.io/v3/' + infuraprojectId)
     const marketContract = new ethers.Contract(hornmarketplaceaddress, HornMarketplace.abi, provider)
     const data = await marketContract.getCurrentlyListedHorns()
     let nonZeroData = data.filter(horn => horn.tokenId != 0)
