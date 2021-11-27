@@ -1,7 +1,9 @@
-Discuss Security Decisions here
+### Security Decisions Discussion
 
-INCLUDE SWC REGISTRY NUMBERS OF ATTACKS THAT ARE PREVENTED
+#### HornMarketplace.sol and Escrow.sol feature protection against integer overflow (SWC 101) and reentrancy (SWC 107):
 
-pragma solidity 0.8.0 for overflow resistance since there is no capped supply to horn NFTs
+##### Overflow
+Throughout the project, the compiler version of solidity is set to exactly `pragma solidity 0.8.0` specifically because this is the first solidity change that includes the OpenZeppelin SafeMath library by default. This is necessary to the structure of the Horn Marketplace at large since there is no capped supply to Horn NFTs. Without a declared maximum supply, it would technically be possible for a malicious actor to spam the contract with NFT mints and reach the native integer limit in Solidity and cause all sorts of issues with NFT recordkeeping and tokenIds. The SafeMath library inside solidity 0.8.0 thus provides overflow resistance.
 
-in order to have logic implementations that are resistant to reentrance, any balance updates in escrow and in hornmarketplace contract are modified before all token transfers or external calls
+##### Reentrancy
+Because the project includes escrow functionality that relies on instantiating a new contract to hold funds securely and trustlessly during the purchase process, external calls to the escrow are unavoidable. All balance updates in both the escrow and hornmarketplace contracts have therefore been stringently implemented with logic to always make balance modifications before any token transfers or external calls, preventing any reentrancy attacks. The fallback and receive functions have similarly been strictly implemented to reject and revert on any function calls or transfers that do not adhere to the marketplace's rules. This ensures that the only possible unexpected interactions with this contract would be from another contract's selfDestruct() mechanism to force acceptance of Eth, which is not a security issue for the marketplace or the escrow as both contracts never rely on any internal recordkeeping of its own Ether balance (the escrow only records funds deposited via its inbuilt deposit() function).
