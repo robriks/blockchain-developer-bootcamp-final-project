@@ -7,7 +7,7 @@ const infuraprojectId = fs.readFileSync(".env").toString()
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  //defaultNetwork: "rinkeby",
+  defaultNetwork: "rinkeby",
   networks: {
     hardhat: {
       chainId: 1337
