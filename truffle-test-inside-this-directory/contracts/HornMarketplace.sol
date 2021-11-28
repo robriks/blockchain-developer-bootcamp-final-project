@@ -9,9 +9,10 @@ pragma solidity 0.8.0;
 
 import "./Escrow.sol";
 
-import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 /*
    Interfaces
@@ -24,7 +25,6 @@ contract HornMarketplace is Ownable, ERC721 {
         Declare Escrow Contract
     */
     Escrow escrow;
-    //EscrowContract escrow = EscrowContract(RINKEBY_DEPLOYED_ESCROW_ADDR_HERE)
 
     /*
         On-chain Horn data: Metadata Struct
@@ -133,7 +133,6 @@ contract HornMarketplace is Ownable, ERC721 {
         Marketplace Function implementations
     */
     // @notice List horn for sale by minting with metadata to fill Horn struct on-chain
-    // IF NEW FUNCTION, MAKE SURE ALL MAPPINGS/ATTRIBUTES ARE PROPERLY SET so escrow functions still work on correct addresses (ie line 191)
     function mintThenListNewHornNFT( 
       string calldata _make, 
       string calldata _model, 
@@ -149,9 +148,7 @@ contract HornMarketplace is Ownable, ERC721 {
         _hornId.increment();
         uint hornId = _hornId.current();
         _mint(msg.sender, hornId);
-        
-        // _setTokenURI(hornId, "https://githubpages.io/largemediafiles/lfs")
-          
+                  
         // @dev Store all horn metadata on-chain EXCEPT images which are stored externally via URI
         horns[hornId] = Horn({
             make: _make,
@@ -187,7 +184,6 @@ contract HornMarketplace is Ownable, ERC721 {
         _hornId.increment();
         uint hornId = _hornId.current();
         _mint(msg.sender, hornId);
-        // _setTokenURI(hornId, "https://blabla.com/") logic still needs to be implemented
 
         // @dev Store all horn metadata on-chain EXCEPT images which are stored externally via URI
         horns[hornId] = Horn({
@@ -220,7 +216,6 @@ contract HornMarketplace is Ownable, ERC721 {
 
         uint hornId = __hornId;
         hornsForSale.push(hornId);
-        // _setTokenURI(hornId, "https://blabla.com");  // need image upload prompt on front end
 
         horns[hornId].listPrice = _desiredPrice;
         horns[hornId].status = HornStatus.ListedForSale;

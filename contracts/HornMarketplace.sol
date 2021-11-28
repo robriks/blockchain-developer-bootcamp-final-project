@@ -80,6 +80,7 @@ contract HornMarketplace is Ownable, ERC721URIStorage {
 
 
     /// @dev Restrict duplicate listings and allow only users who are minting their instrument as an NFT for the first time by checking hashes of concatenated make and serial number
+    /// ToDo!
     // modifier nonDuplicateMint(string calldata _make, uint _serialNumber) { //THE MAKEANDSERIALHASHES MAPPING CAN ACTUALLY BE TURNED INTO BYTES ARRAY
     //     //Hash concatenated _make and _serialNumber given by user
     //     bytes32 hashOfMakeAndSerial = keccak256(abi.encodePacked(_make, _serialNumber));

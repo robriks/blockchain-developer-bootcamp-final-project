@@ -19,10 +19,10 @@ A full-stack dApp featuring a Horn Marketplace that allows classical musicians t
 The fully functional dApp is live at the front-end link above, which interacts with the marketplace contract on Rinkeby testnet. If you are just trying out the already-deployed dApp for fun or for grading, skip this section. However if you would like to play around with this project locally follow these instructions:
 Clone the repo:
 ```
-git clone github.com/robriks/consensys-academy-final-project
+git clone https://github.com/robriks/consensys-academy-final-project
 ```
 
-Navigate to root directory and install dependencies for the dApp  to function:
+Navigate to root directory and install dependencies for the dApp to function:
 In the project's root directory, run 
 ```
 npm install
@@ -33,7 +33,7 @@ Start a local blockchain using the Hardhat dependency you just installed:
 npx hardhat node
 ```
 
-In a new terminal, run the deployment script to deploy the marketplace contract on localhost network:
+In a new terminal, run the deployment script to deploy the marketplace contract on localhost network (this network must be specified as the default is currently set to Rinkeby in the hardhat.config.js file):
 ```
 npx hardhat run --network localhost scripts/deploy.js
 ```
@@ -42,11 +42,13 @@ Start the front-end:
 ```
 npm run dev
 ```
-Open your localhost port 3000 and enjoy the horn marketplace!
+Open your localhost port 3000 and enjoy the horn marketplace! Make sure to use two metamask accounts when using the marketplace, a seller account and a buyer account since the marketplace will not allow you to purchase your own listings and will appear differently to each user depending on whether they are a seller or buyer.
 
 ### How to run the project's Solidity tests:
 Important Note: Even though the main structure of the project is built using Hardhat, the tests are written in Solidity and must be tested using Truffle.  To do so, navigate to the "truffle-test-inside-this-directory" folder and run 
-`npm install`
+```
+npm install
+```
 in order to install the testing dependencies which will enable the
 ```
 truffle test
@@ -55,7 +57,7 @@ command that will compile and run Solidity tests on a temporary test blockchain 
 
 IMPORTANT: This means `npx hardhat test` will NOT compile or properly run the tests (there is not even the standard "test" directory).
 
-Instead, navigate into the directory named: "truffle-test-inside-this-directory" and then run `truffle test` to execute (and grade :) ) my 46 passing tests. This MUST be the command used to run the Solidity test files in the truffle-test-inside-this-directory folder, because they rely on Truffle and NOT Hardhat like the rest of the project. I understand this is a bit unusual and inconvenient but given the time constraints for the final project due date and the fact that I have thus shown competence in building a dapp using two frameworks, both Truffle and Hardhat, I hope this won't detract from my final grade and maybe even earn me some extra credit ;P .
+Instead, navigate into the directory named: "truffle-test-inside-this-directory" and then run `truffle test` to execute (and grade :) ) my 46 passing tests. This MUST be the command used to run the Solidity test files in the truffle-test-inside-this-directory folder, because they rely on Truffle and NOT Hardhat like the rest of the project. I understand this is a bit unusual and inconvenient but given the time constraints for the final project due date and the fact that I have thus shown competence in building a dapp using two frameworks, both Truffle and Hardhat.
 
 Why use both Truffle and Hardhat?  Since there was more recent documentation available, I decided to use Hardhat to develop my front-end after originally having written my contracts and tests using Truffle. I originally chose to use Truffle to write Solidity tests because I wanted to really delve into Solidity as a language to become fluent in it as fast as possible. After having migrated to Hardhat, and halfway through working on my front-end, I belatedly realized that Hardhat does not support Solidity tests. Since Hardhat does not support tests written in Solidity, this project instead includes a nested truffle project to run the Solidity tests from.
 
