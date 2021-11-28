@@ -31,9 +31,12 @@ Note that this command will need to be run again later inside the truffle-test-i
 
 #### Reconfigure Hardhat to work locally instead of the default Rinkeby testnet settings:
 
-Open the hardhat.config.js file in the project root directory and comment out lines 3-4, line 10, and lines 15-18. This will prevent Hardhat from attempting to communicate with Rinkeby and instead use the local blockchain you're about to start running in the next step.
+Open the hardhat.config.js file in the project root directory and comment out lines 3-4, line 10, and lines 15-18. 
+Then open the index.js file in the /pages directory ( ie pages/index.js ) and delete the string parameter 'https://rinkeby.infura.io/xxx' inside of the JsonRpcProvider() method.
 
-#### Start a local blockchain using the Hardhat dependency you just installed:
+These steps will prevent Hardhat from attempting to communicate with Rinkeby and instead use the local blockchain you're about to start running in the next step.
+
+#### Start a local blockchain on localhost port 8545 using the Hardhat dependency you just installed:
 ```
 npx hardhat node
 ```
@@ -63,13 +66,27 @@ In a new terminal, run the deployment script to deploy the marketplace contract 
 ```
 npx hardhat run --network localhost scripts/deploy.js
 ```
+Copy the deployed contract address returned by this command to use in the next step
+
+#### Update config.js with deployed contract address
+Once you've copied the deployed HornMarketplace contract address from inside the terminal, open the config.js file in the project's root directory and paste that address into the string quotes, replacing the current Rinkeby-deployed hornmarketplace address. This will point the front-end to your deployed contract address on the localhost blockchain you're running.
 
 #### Start the front-end:
 ```
 npm run dev
 ```
-#### Open your localhost port 3000 and enjoy the horn marketplace! 
-Make sure to use two metamask accounts as instructed when using the marketplace, a seller account and a buyer account since the marketplace will not allow you to purchase your own listings and will appear differently to each user depending on whether they are a seller or buyer.
+#### Open your localhost port 3000 and enjoy the horn marketplace!
+Make sure to use two metamask accounts as instructed when using the marketplace, a seller account and a buyer account since the marketplace will not allow you to purchase an account's own listings and will appear differently to each user depending on whether they are a seller or buyer.
+
+##### Potential troubleshooting reminder:
+If you forgot to clear the JSON RPC Provider parameter inside of pages/index.js, the Marketplace Home tab will show you an error detailing a transaction revert with a JSON RPC issue. This is because you forgot to update the index.js file which resides inside the /pages directory. Open pages/index.js and delete the string parameter 'https://rinkeby.infura.io/xxx' inside of the JsonRpcProvider() method.
+
+##### When trying out the dApp:
+Start by minting and listing a horn, feel free to download a stock image of a French horn to upload to the IPFS file upload field (the front-end will not let you mint an NFT without an image). Here's a photo: https://en.wikipedia.org/wiki/French_horn#/media/File:Yamaha_Horn_YHR-667V.tif
+
+Because this dApp is a marketplace, my implementation of the smart contract restricts behaviors to two separate classes of users: buyers and sellers, assigned on a per-instrument basis at time of listing and at purchase. Therefore, to properly interact with the dApp, you MUST use two MetaMask accounts to simulate both a seller and a buyer. The front-end also differentiates between these two classes by reading your MetaMask address and only displaying active purchases and sales that are relevant to you for actions like shipping or claiming depending on whether you have listed, paid for, sold, or shipped an instrument. Keep track of which address is a buyer/seller as you cycle between the front-end components and at what stage (minted, listed, paidfor, sold, shipped, delivered) the transaction is at, so you can fully appreciate the marketplace's functionality!
+
+More in-depth instructions and demonstrations on how the front-end works are available in the screencast video below the following unit tests section.
 
 ### How to run the project's Solidity tests:
 Important Note: Even though the main structure of the project is built using Hardhat, the tests are written in Solidity and must be tested using Truffle.  To do so, navigate to the "truffle-test-inside-this-directory" folder and run 
@@ -87,12 +104,6 @@ IMPORTANT: This means `npx hardhat test` will NOT compile or properly run the te
 Instead, navigate into the directory named: "truffle-test-inside-this-directory" and then run `truffle test` to execute (and grade :) ) my 46 passing tests. This MUST be the command used to run the Solidity test files in the truffle-test-inside-this-directory folder, because they rely on Truffle and NOT Hardhat like the rest of the project. I understand this is a bit unusual and inconvenient but given the time constraints for the final project due date and the fact that I have thus shown competence in building a dapp using two frameworks, both Truffle and Hardhat.
 
 Why use both Truffle and Hardhat?  Since there was more recent documentation available, I decided to use Hardhat to develop my front-end after originally having written my contracts and tests using Truffle. I originally chose to use Truffle to write Solidity tests because I wanted to really delve into Solidity as a language to become fluent in it as fast as possible. After having migrated to Hardhat, and halfway through working on my front-end, I belatedly realized that Hardhat does not support Solidity tests. Since Hardhat does not support tests written in Solidity, this project instead includes a nested truffle project to run the Solidity tests from.
-
-### Interacting with the dApp
-First, in the root directory, ensure that configurations are properly set by populating the .secret file and the .env file (which are both protected by .gitignore). Do this by pasting the private key to your Rinkeby testnet account into the .secret file and by pasting your Infura Rinkeby API key into the .env file. To use multiple accounts with individual private keys, create a new file with its respective privateKey const declaration in the hardhat.config.js file, similar to the original .secret file. If you fork this repo, be sure to add any additional .secret2/3/4 etc files to .gitignore before pushing to GitHub.
-
-##### When trying out the dApp:
-Because this dApp is a marketplace, my implementation of the smart contract restricts behaviors to two separate classes of users: buyers and sellers, assigned on a per-instrument basis at time of listing and at purchase. Therefore, to properly interact with the dApp, you MUST use two MetaMask accounts to simulate both a seller and a buyer. The front-end also differentiates between these two classes by reading your MetaMask address and only displaying active purchases and sales that are relevant to you for actions like shipping or claiming depending on whether you have listed, paid for, sold, or shipped an instrument. Keep track of which address is a buyer/seller as you cycle between the front-end components and at what stage (minted, listed, paidfor, sold, shipped, delivered) the transaction is at, so you can fully appreciate the marketplace's functionality!
 
 ##### For your security: 
 If you choose to use your own endpoints or private keys, be sure to only add Infura account details, MetaMask mnemonics, any private keys, etc., to the .env and .secret files, which will be injected into the Horn Marketplace dApp through Infura/MetaMask privately and securely. This file is protected by a .gitignore in the project locally so that your private keys are NEVER uploaded to the blockchain or to GitHub by git tracking.
