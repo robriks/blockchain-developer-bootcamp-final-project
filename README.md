@@ -1,6 +1,6 @@
 # A Peer-to-Peer Marketplace dApp for NFTs representing physical-world instruments using IPFS and secure escrow on the Ethereum blockchain
 ##### by robriks 
-github.com/robriks/consensys-academy-final-project
+github.com/robriks/blockchain-developer-bootcamp-final-project
 #### My Ethereum address: 
 ##### 👦🏻👦🏻.eth / hornosexual.eth / 0x65b54A4646369D8ad83CB58A5a6b39F22fcd8cEe
 Feel free to send my certification as an NFT to any one of the above addresses if I pass (they all route to the same place)
@@ -19,7 +19,7 @@ A full-stack dApp featuring a Horn Marketplace that allows classical musicians t
 The fully functional dApp is live at the front-end link above, which interacts with the marketplace contract on Rinkeby testnet. If you are just trying out the already-deployed dApp for fun or for grading, skip this section. However if you would like to play around with this project locally follow these instructions:
 Clone the repo:
 ```
-git clone https://github.com/robriks/consensys-academy-final-project
+git clone https://github.com/robriks/blockchain-developer-bootcamp-final-project
 ```
 
 Navigate to root directory and install dependencies for the dApp to function:
@@ -27,11 +27,14 @@ In the project's root directory, run
 ```
 npm install
 ```
+Note that this command will need to be run again later inside the truffle-test-inside-this-directory to run the 46 accompanying unit tests.
 
 Start a local blockchain using the Hardhat dependency you just installed:
 ```
 npx hardhat node
 ```
+
+Grab the private keys of the first two accounts provided by the Hardhat node you just started and import both into MetaMask with the "Import Account" button under the Accounts tab. These accounts are your buyer and seller addresses, provided with 10000 test ETH by default.
 
 In a new terminal, run the deployment script to deploy the marketplace contract on localhost network (this network must be specified as the default is currently set to Rinkeby in the hardhat.config.js file):
 ```
@@ -68,7 +71,7 @@ First, in the root directory, ensure that configurations are properly set by pop
 Because this dApp is a marketplace, my implementation of the smart contract restricts behaviors to two separate classes of users: buyers and sellers, assigned on a per-instrument basis at time of listing and at purchase. Therefore, to properly interact with the dApp, you MUST use two MetaMask accounts to simulate both a seller and a buyer. The front-end also differentiates between these two classes by reading your MetaMask address and only displaying active purchases and sales that are relevant to you for actions like shipping or claiming depending on whether you have listed, paid for, sold, or shipped an instrument. Keep track of which address is a buyer/seller as you cycle between the front-end components and at what stage (minted, listed, paidfor, sold, shipped, delivered) the transaction is at, so you can fully appreciate the marketplace's functionality!
 
 ##### For your security: 
-Be sure to only add Infura account details, MetaMask mnemonics, any private keys, etc., to the .env and .secret files, which will be injected into the Horn Marketplace dApp through Infura/MetaMask privately and securely. This file is protected by a .gitignore in the project locally so that your private keys are NEVER uploaded to the blockchain or to GitHub by git tracking.
+If you choose to use your own endpoints or private keys, be sure to only add Infura account details, MetaMask mnemonics, any private keys, etc., to the .env and .secret files, which will be injected into the Horn Marketplace dApp through Infura/MetaMask privately and securely. This file is protected by a .gitignore in the project locally so that your private keys are NEVER uploaded to the blockchain or to GitHub by git tracking.
 
 ##### Screencast Walkthrough:
 A screencast of a project walkthrough is available here:
