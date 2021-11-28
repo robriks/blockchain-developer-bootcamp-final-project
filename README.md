@@ -17,35 +17,59 @@ A full-stack dApp featuring a Horn Marketplace that allows classical musicians t
 
 ### Local Setup Instructions:
 The fully functional dApp is live at the front-end link above, which interacts with the marketplace contract on Rinkeby testnet. If you are just trying out the already-deployed dApp for fun or for grading, skip this section. However if you would like to play around with this project locally follow these instructions:
-Clone the repo:
+#### Clone the repo:
 ```
 git clone https://github.com/robriks/blockchain-developer-bootcamp-final-project
 ```
 
-Navigate to root directory and install dependencies for the dApp to function:
+#### Navigate to root directory and install dependencies for the dApp to function:
 In the project's root directory, run 
 ```
 npm install
 ```
 Note that this command will need to be run again later inside the truffle-test-inside-this-directory to run the 46 accompanying unit tests.
 
-Start a local blockchain using the Hardhat dependency you just installed:
+#### Reconfigure Hardhat to work locally instead of the default Rinkeby testnet settings:
+
+Open the hardhat.config.js file in the project root directory and comment out lines 3-4, line 10, and lines 15-18. This will prevent Hardhat from attempting to communicate with Rinkeby and instead use the local blockchain you're about to start running in the next step.
+
+#### Start a local blockchain using the Hardhat dependency you just installed:
 ```
 npx hardhat node
 ```
 
+#### Important: Common troubleshooting error
+This project was developed using Node version 16.9.0. If the above command returns an error, like a JSON-RPC error or HH604, it means that your version of Node is either too recent or too old to work with HardHat. Node version 17.x introduced an ssl connection that currently breaks HardHat. In this case, follow these steps to use a supported Node version:
+
+##### Check your version of Node using `node -v`
+
+##### Switch to a version of Node that is supported by using your preferred node version manager.
+Either npm's n package or nvm will do. If you're not familiar with these tools, install npm n as it is easier to work with by running (with sudo):
+```
+sudo npm install -g n
+```
+And then install Node version 16.9.0:
+```
+sudo n 16.9.0
+```
+
+##### Now run the `npx hardhat node` command from before again, and HardHat will use node version 16.9.0 to start your local blockchain
+
+#### Import buyer and seller accounts from HardHat
 Grab the private keys of the first two accounts provided by the Hardhat node you just started and import both into MetaMask with the "Import Account" button under the Accounts tab. These accounts are your buyer and seller addresses, provided with 10000 test ETH by default.
 
+#### Deploy HornMarketplace.sol to your localhost network using --network
 In a new terminal, run the deployment script to deploy the marketplace contract on localhost network (this network must be specified as the default is currently set to Rinkeby in the hardhat.config.js file):
 ```
 npx hardhat run --network localhost scripts/deploy.js
 ```
 
-Start the front-end:
+#### Start the front-end:
 ```
 npm run dev
 ```
-Open your localhost port 3000 and enjoy the horn marketplace! Make sure to use two metamask accounts when using the marketplace, a seller account and a buyer account since the marketplace will not allow you to purchase your own listings and will appear differently to each user depending on whether they are a seller or buyer.
+#### Open your localhost port 3000 and enjoy the horn marketplace! 
+Make sure to use two metamask accounts as instructed when using the marketplace, a seller account and a buyer account since the marketplace will not allow you to purchase your own listings and will appear differently to each user depending on whether they are a seller or buyer.
 
 ### How to run the project's Solidity tests:
 Important Note: Even though the main structure of the project is built using Hardhat, the tests are written in Solidity and must be tested using Truffle.  To do so, navigate to the "truffle-test-inside-this-directory" folder and run 
