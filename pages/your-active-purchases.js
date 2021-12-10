@@ -81,14 +81,14 @@ export default function YourActivePurchases() {
 
 
     if (loadingState === 'loaded' && !purchases.length && !shipped.length) return (
-    <div>
+    <div className="page">
         <h1 className="flex justify-center py-10 px-20 text-3xl">You haven't purchased a Horn NFT yet</h1>
         <p className="flex justify-center text 2-1 text-gray">Head to 'Marketplace Home' to get started with selling or purchasing a horn NFT</p>
     </div>
     )
     return (
       <div>
-        <div className="p-9">
+        <div className="p-9 page">
         <h2 className="font-bold text-2x1 py-2">Your Active Purchases</h2>
         {
           Boolean(purchases.length) && (

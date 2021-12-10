@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .button {
+        @apply w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-12 my-2 rounded-md
+    },
+    .card {
+        @apply shadow hover:shadow-xl rounded-xl overflow-hidden p-5 bg-white;
+    },
+    .nav-link {
+        @apply py-2 font-bold text-white text-center hover:text-green-500;
+    },
+    .active {
+        @apply border-b-4 border-green-500;
+    },
+    .page {
+        @apply p-10 justify-center h-full content-center bg-web-wash mx-auto flex-wrap max-w-screen-xl;
+    }
+    h2 {
+        @apply font-bold text-2xl py-2 text-center;
+    }
+}

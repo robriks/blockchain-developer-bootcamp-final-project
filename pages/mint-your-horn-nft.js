@@ -79,14 +79,14 @@ export default function MintYourHornNFT () {
     }
 
     return (
-        <div className="flex justify-center">
-            <div className="w-1/2 flex flex-col pb-12">
+        <div className="page">
+            <h2>Mint Your Horn NFT</h2>
+            <div className="max-w-xl m-auto flex flex-col pb-12">
                 <input
                   placeholder="Make/Manufacturer of Horn (ie Yamaha, Conn, Englebert Schmid)"
                   className="mt-8 border rounded p-4"
                   onChange={e => updateFormInput({ ...formInput, make: e.target.value })} 
                 />
-                
                 <input
                   placeholder="Model of Horn (ie 667, 8D, Custom)"
                   className="mt-2 border rounded p-4"
