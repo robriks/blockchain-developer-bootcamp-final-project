@@ -86,7 +86,7 @@ export default function YourCurrentSales() {
     )
     return (
       <div>
-        <div className="p-9">
+        <div className="p-9 page">
         <h2 className="font-bold text-2x1 py-2">Owned Horn NFTs</h2>
           {
             Boolean(needsShip.length) && (

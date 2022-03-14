@@ -15,6 +15,11 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
+    "/": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/index.js"
+    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -25,15 +30,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/my-horns": [
+    "/mint-your-horn-nft": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/my-horns.js"
-    ],
-    "/your-active-purchases": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/your-active-purchases.js"
+      "static/chunks/pages/mint-your-horn-nft.js"
     ]
   },
   "ampFirstPages": []

@@ -68,14 +68,12 @@ export default function Home() {
   )
 
   return (
-    <div className="flex justify-center">
-      <div className="p-4">
-      <h2 className="font-bold text-2x1 py-2">Horns For Sale</h2>
-        <div className="px-r" style={{ maxWidth: '1600px'}}>
+    <div className="page">
+      <h2>Horns For Sale</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-2">
             {
               nfts.map((nft, i) => (
-                <div key={i} className="shadow rounded-x1 overflow-hidden">
+                <div key={i} className="card">
                   <div className="p-3">
                     <p style={{ height: '50px' }} className="flex justify-center text-3xl font-semibold p-4">{nft.make}</p>
                     <div style={{ height: "30px", overflow: 'hidden' }}>
@@ -116,15 +114,13 @@ export default function Home() {
                     />
                   </div>
                   <div className="p-1">
-                    <button style={{height: '50px'}} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-12 rounded-md" 
+                    <button style={{height: '50px'}} className="button" 
                       onClick={() => purchaseHorn(nft)}>Purchase Horn</button>
                   </div>
                 </div>
               ))
             }
           </div>
-        </div>
-      </div>
     </div>
   )
 }

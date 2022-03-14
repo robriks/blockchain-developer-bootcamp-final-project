@@ -65,7 +65,7 @@ export default function MyHorns() {
     function isSoldOrShippedOrDelivered(nft) {
       if (nft.status == 1) { // Horn NFT shown as Sold by reading enum HornStatus from Marketplace contract
         return (
-          <div className="p-3">
+          <div className="p-3 page">
             <h2 className="flex justify-center font-bold items-center px-25 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-pink-500">Sold! Buyer sent payment to escrow</h2>
             <p className="flex justify-center items-center py-1 text-gray-500 font-small">Click below to view shipping address:</p>
             <div className="p-2 flex justify-center">
@@ -81,7 +81,7 @@ export default function MyHorns() {
       } 
       if (nft.status == 2) { // Horn NFT shown as Shipped by reading enum HornStatus from Marketplace contract
         return (
-          <div className="p-3">
+          <div className="p-3 page">
             <h2 className="flex justify-center font-bold items-center px-25 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-pink-500">
               Shipped to buyer! Awaiting delivery
             </h2>
@@ -113,7 +113,7 @@ export default function MyHorns() {
     )
     return (
       <div>
-        <div className="p-9">
+        <div className="p-9 page">
         <h2 className="font-bold text-2x1 py-2">Owned Horn NFTs</h2>
           {
             Boolean(listed.length) && (
@@ -144,7 +144,7 @@ export default function MyHorns() {
             )
           }
         </div>
-        <div className="p-5">
+        <div className="p-5 page">
           {
             Boolean(unlisted.length) && (
               <div>
